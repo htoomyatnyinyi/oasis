@@ -11,6 +11,7 @@ module.exports = withUniwindConfig(config, {
   // (optional) path where we gonna auto-generate typings
   // defaults to project's root
   dtsFile: "./app/uniwind-types.d.ts",
-  // extraThemes: ["premium"], // Register your custom theme here
+
+  // theme
   extraThemes: ["ocean", "sunset", "forest", "high-contrast"],
 });

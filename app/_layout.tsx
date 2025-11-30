@@ -1,12 +1,25 @@
 import "@/global.css";
+
+import { store } from "@/redux/store";
+import {
+  DarkTheme,
+  DefaultTheme,
+  ThemeProvider,
+} from "@react-navigation/native";
 import { Stack } from "expo-router";
+import { Provider } from "react-redux";
+import { useUniwind } from "uniwind";
 
 export default function RootLayout() {
-  // return <Stack />;
+  const { theme: uniWindTheme } = useUniwind();
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)"></Stack.Screen>
-      {/* <Stack.Screen name="signin" options={{ title: "signin" }}></Stack.Screen> */}
-    </Stack>
+    <ThemeProvider value={uniWindTheme === "light" ? DefaultTheme : DarkTheme}>
+      <Provider store={store}>
+        <Stack>
+          <Stack.Screen name="(tabs)"></Stack.Screen>
+          {/* <Stack.Screen name="signin" options={{ title: "signin" }}></Stack.Screen> */}
+        </Stack>
+      </Provider>
+    </ThemeProvider>
   );
 }

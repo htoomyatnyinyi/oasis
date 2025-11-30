@@ -5,13 +5,13 @@ const Theme = () => {
   const { theme, hasAdaptiveThemes } = useUniwind();
 
   const themes = [
-    { name: "light" as const, label: "Light", icon: "☀️" },
-    { name: "dark" as const, label: "Dark", icon: "🌙" },
-    { name: "ocean" as const, label: "Ocean", icon: "🌊" },
-    { name: "sunset" as const, label: "Sunset", icon: "🌅" },
-    { name: "forest" as const, label: "Forest", icon: "🌲" },
-    { name: "high-contrast" as const, label: "High Contrast", icon: "♿" },
-  ] as const;
+    { name: "light", label: "Light", icon: "☀️" },
+    { name: "dark", label: "Dark", icon: "🌙" },
+    { name: "ocean", label: "Ocean", icon: "🌊" },
+    { name: "sunset", label: "Sunset", icon: "🌅" },
+    { name: "forest", label: "Forest", icon: "🌲" },
+    { name: "high-contrast", label: "High Contrast", icon: "♿" },
+  ];
   const activeTheme = hasAdaptiveThemes ? "system" : theme;
   console.log(activeTheme, theme);
   return (
