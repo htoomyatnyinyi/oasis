@@ -1,6 +1,6 @@
 import "@/global.css";
 
-import { store } from "@/redux/store";
+import { store } from "@/services/store";
 import {
   DarkTheme,
   DefaultTheme,

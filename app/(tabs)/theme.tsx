@@ -13,7 +13,7 @@ const Theme = () => {
     { name: "high-contrast", label: "High Contrast", icon: "♿" },
   ];
   const activeTheme = hasAdaptiveThemes ? "system" : theme;
-  console.log(activeTheme, theme);
+  // console.log(activeTheme, theme);
   return (
     <View className="p-4 gap-4">
       <Text className="text-sm text-foreground">Current: {activeTheme}</Text>

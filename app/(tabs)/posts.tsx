@@ -1,4 +1,4 @@
-import { useGetPostsQuery } from "@/redux/slice/apiSlice";
+import { useGetPostsQuery } from "@/services/api/apiSlice";
 import React from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
 
