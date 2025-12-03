@@ -1,10 +1,19 @@
 import { Pressable, ScrollView, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Uniwind, useUniwind } from "uniwind";
 
 const Theme = () => {
   const { theme, hasAdaptiveThemes } = useUniwind();
 
-  const themes = [
+  type ThemeName =
+    | "light"
+    | "dark"
+    | "ocean"
+    | "sunset"
+    | "forest"
+    | "high-contrast";
+
+  const themes: { name: ThemeName; label: string; icon: string }[] = [
     { name: "light", label: "Light", icon: "☀️" },
     { name: "dark", label: "Dark", icon: "🌙" },
     { name: "ocean", label: "Ocean", icon: "🌊" },
@@ -12,10 +21,11 @@ const Theme = () => {
     { name: "forest", label: "Forest", icon: "🌲" },
     { name: "high-contrast", label: "High Contrast", icon: "♿" },
   ];
+
   const activeTheme = hasAdaptiveThemes ? "system" : theme;
-  // console.log(activeTheme, theme);
+
   return (
-    <View className="p-4 gap-4">
+    <SafeAreaView className="p-4 gap-4">
       <Text className="text-sm text-foreground">Current: {activeTheme}</Text>
 
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
@@ -51,7 +61,7 @@ const Theme = () => {
           ))}
         </View>
       </ScrollView>
-    </View>
+    </SafeAreaView>
   );
 };
 export default Theme;

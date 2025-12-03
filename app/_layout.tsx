@@ -17,7 +17,10 @@ export default function RootLayout() {
       <Provider store={store}>
         <Stack>
           <Stack.Screen name="(tabs)"></Stack.Screen>
-          {/* <Stack.Screen name="signin" options={{ title: "signin" }}></Stack.Screen> */}
+          <Stack.Screen
+            name="index"
+            options={{ title: "index" }}
+          ></Stack.Screen>
         </Stack>
       </Provider>
     </ThemeProvider>

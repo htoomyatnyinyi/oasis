@@ -1,9 +1,9 @@
 import { useGetPostsQuery } from "@/services/api/apiSlice";
 import React from "react";
 import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Posts = () => {
-  // Automatically handles fetching, loading, error, and caching
   const {
     data: posts,
     isLoading,
@@ -25,22 +25,24 @@ const Posts = () => {
   if (isError) {
     return (
       <View>
-        <Text>Error fetching posts: {error.status}</Text>
+        <Text>Error fetching posts</Text>
       </View>
     );
   }
 
   return (
-    <FlatList
-      data={posts}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={({ item }) => (
-        <View className="dark:text-shadow-yellow-300 p-2 m-1  border text-green-500">
-          <Text className="text-green-300">{item.title}</Text>
-          <Text>{item.body.substring(0, 100)}...</Text>
-        </View>
-      )}
-    />
+    <SafeAreaView>
+      <FlatList
+        data={posts}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <View className="dark:text-shadow-yellow-300 p-2 m-1  border text-green-500">
+            <Text className="text-green-300">{item.title}</Text>
+            <Text>{item.body.substring(0, 100)}...</Text>
+          </View>
+        )}
+      />
+    </SafeAreaView>
   );
 };
 

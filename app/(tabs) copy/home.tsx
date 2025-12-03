@@ -1,9 +1,10 @@
 import { Link } from "expo-router";
 import { useState } from "react";
-import { Button, Text, View } from "react-native";
+import { Button, Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Uniwind } from "uniwind";
 
-export default function Index() {
+export default function Home() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
 
   const switchTheme = () => {
@@ -36,14 +37,13 @@ export default function Index() {
   console.log(theme, "theme");
 
   return (
-    <View className="flex-1 item-center justify-center bg-background">
+    <SafeAreaView className="flex-1 item-center justify-center bg-background">
       <Text className="text-green dark:text-yellow-500">
         Lorem ipsum dolor sit, amet consectetur adipisicing elit. Vero, fugit.
         Dolores autem, nulla porro corrupti expedita sit odio placeat aliquam
         repellat temporibus, sapiente tempore accusamus, totam esse minus
         officiis vel.
       </Text>
-      <Link href="/signin">Signin</Link>
       <Link href="/theme">Theme</Link>
       <Text>
         here-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Aut
@@ -66,6 +66,6 @@ export default function Index() {
       <Button title={`Switch to forest Theme`} onPress={setForest} />
       <Button title={`Switch to hign Theme`} onPress={setHigh} />
       <Button title={`Switch to sunset Theme`} onPress={setSunset} />
-    </View>
+    </SafeAreaView>
   );
 }
