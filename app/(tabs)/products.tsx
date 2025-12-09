@@ -4,7 +4,6 @@ import {
 } from "@/services/api/productApi";
 import { Product } from "@/types";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link } from "expo-router";
 import React, { useState } from "react";
 import { FlatList, Image, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -32,7 +31,6 @@ const products = () => {
       key={item.id}
       className="flex-1 justify-center items-center backdrop-blur-3xl shadow-2xl p-2 m-1 border-amber-400 "
     >
-      <Link href={`/products/${item.id}`} className="mb-2"></Link>
       {/* href=
       {{
         pathname: "/user/[id]",
@@ -45,10 +43,6 @@ const products = () => {
       <TouchableOpacity onPress={() => console.log(item.id)}>
         <Text>Add to Cart</Text>
       </TouchableOpacity>
-
-      <Link href={`/newproduct`} className="p-2 m-1">
-        Product Form
-      </Link>
     </SafeAreaView>
   );
 

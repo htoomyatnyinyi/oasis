@@ -22,14 +22,15 @@ export default function TabsLayout() {
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="details"
+        name="map"
         options={{
-          title: "details",
+          title: "map",
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />
           ),
         }}
       ></Tabs.Screen>
+
       {/* <Tabs.Screen
         name="posts"
         options={{

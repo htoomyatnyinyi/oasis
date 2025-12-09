@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { setCredentials } from "../slices/authSlice";
 
 export const authApi = createApi({
   reducerPath: "auth",
@@ -32,6 +33,16 @@ export const authApi = createApi({
         method: "POST",
         body: credentials,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        try {
+          const { data } = await queryFulfilled;
+          console.log(data.data.token, "auth api");
+          // dispatch(setToken(data.accessToken)); // Store the token in Redux
+          dispatch(setCredentials(data.data.token)); // Store the token in Redux
+        } catch (error) {
+          console.error("Login error:", error);
+        }
+      },
       invalidatesTags: ["User"],
     }),
 

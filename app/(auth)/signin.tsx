@@ -1,5 +1,4 @@
 import { useLoginMutation } from "@/services/api/authApi";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Link } from "expo-router";
 import React, { useState } from "react";
 import {
@@ -12,8 +11,8 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Signin = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("htoomyat3@mail.com");
+  const [password, setPassword] = useState("htoomyat2");
 
   const [signIn, { isLoading }] = useLoginMutation();
   const [cookie, setCookie] = useState(null);
@@ -38,14 +37,16 @@ const Signin = () => {
     try {
       const result = await signIn({ email, password }).unwrap();
 
-      console.log("Sign-in successful:", result);
+      // console.log("Sign-in successful:", result);
 
       // --- 1. Check if the login was successful and a token exists ---
       const token = result?.data?.token;
 
       if (token) {
         // --- 2. Store the token using AsyncStorage.setItem() ---
-        await AsyncStorage.setItem("token", token);
+
+        // replace with rtk testing persistance
+        // await AsyncStorage.setItem("token", token);
         console.log("Token stored successfully.");
 
         // --- 3. Navigate to the home or dashboard screen ---
