@@ -8,9 +8,11 @@ const signup = () => {
   const [content, setContenet] = useState<any>([]);
 
   const [form, setForm] = useState({
-    name: "",
-    price: "",
-    quantity: "",
+    email: "htoomyat12@mail.com",
+    password: "htoomyat",
+    username: "hm",
+    firstName: "h",
+    lastName: "m",
   });
 
   //   "email": "hevid47677@docsfy.com",
@@ -19,7 +21,7 @@ const signup = () => {
   // "firstName": "he",
   // "lastName": "vi"
 
-  console.log(form, "form");
+  // console.log(form, "form");
 
   const handleSignUp = async () => {
     const da = await register(form);
@@ -30,22 +32,34 @@ const signup = () => {
     <SafeAreaView>
       <Text>signup</Text>
       <TextInput
-        placeholder="name"
+        placeholder="email"
         className="p-2 m-1 text-sky-500"
-        value={form.name}
-        onChangeText={(value) => setForm({ ...form, name: value })}
+        value={form.email}
+        onChangeText={(value) => setForm({ ...form, email: value })}
       />
       <TextInput
-        placeholder="price"
+        placeholder="username"
         className="p-2 m-1 text-sky-500"
-        value={form.price}
-        onChangeText={(value) => setForm({ ...form, price: value })}
+        value={form.username}
+        onChangeText={(value) => setForm({ ...form, username: value })}
+      />{" "}
+      <TextInput
+        placeholder="firstName"
+        className="p-2 m-1 text-sky-500"
+        value={form.firstName}
+        onChangeText={(value) => setForm({ ...form, firstName: value })}
       />
       <TextInput
-        placeholder="quantity"
+        placeholder="lastName"
         className="p-2 m-1 text-sky-500"
-        value={form.quantity}
-        onChangeText={(value) => setForm({ ...form, quantity: value })}
+        value={form.lastName}
+        onChangeText={(value) => setForm({ ...form, lastName: value })}
+      />
+      <TextInput
+        placeholder="password"
+        className="p-2 m-1 text-sky-500"
+        value={form.password}
+        onChangeText={(value) => setForm({ ...form, password: value })}
       />
       <Button
         disabled={isRegistering}

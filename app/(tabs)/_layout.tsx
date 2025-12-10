@@ -9,8 +9,7 @@ export default function TabsLayout() {
         tabBarInactiveTintColor: "green",
         tabBarActiveTintColor: "coral",
         headerShown: true,
-      }}
-    >
+      }}>
       {/* <Tabs.Screen name="index" options={{ title: "index" }}></Tabs.Screen> */}
       <Tabs.Screen
         name="products"
@@ -19,8 +18,7 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />
           ),
-        }}
-      ></Tabs.Screen>
+        }}></Tabs.Screen>
       <Tabs.Screen
         name="map"
         options={{
@@ -28,9 +26,32 @@ export default function TabsLayout() {
           tabBarIcon: ({ color, size }) => (
             <Entypo name="home" size={size} color={color} />
           ),
-        }}
-      ></Tabs.Screen>
+        }}></Tabs.Screen>
 
+      <Tabs.Screen
+        name="home"
+        options={{
+          title: "home",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="home" size={size} color={color} />
+          ),
+        }}></Tabs.Screen>
+      <Tabs.Screen
+        name="modal"
+        options={{
+          title: "modal",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="home" size={size} color={color} />
+          ),
+        }}></Tabs.Screen>
+      <Tabs.Screen
+        name="cart"
+        options={{
+          title: "cart",
+          tabBarIcon: ({ color, size }) => (
+            <Entypo name="home" size={size} color={color} />
+          ),
+        }}></Tabs.Screen>
       {/* <Tabs.Screen
         name="posts"
         options={{

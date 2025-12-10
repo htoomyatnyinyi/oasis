@@ -14,7 +14,7 @@ const Signin = () => {
   const [email, setEmail] = useState("htoomyat3@mail.com");
   const [password, setPassword] = useState("htoomyat2");
 
-  const [signIn, { isLoading }] = useLoginMutation();
+  const [login, { isLoading }] = useLoginMutation();
   const [cookie, setCookie] = useState(null);
 
   // useEffect(() => {
@@ -35,9 +35,9 @@ const Signin = () => {
 
   const handleSignIn = async () => {
     try {
-      const result = await signIn({ email, password }).unwrap();
+      const result = await login({ email, password }).unwrap();
 
-      // console.log("Sign-in successful:", result);
+      console.log("Sign-in successful:", result);
 
       // --- 1. Check if the login was successful and a token exists ---
       const token = result?.data?.token;
@@ -89,8 +89,7 @@ const Signin = () => {
         <TouchableOpacity
           onPress={handleSignIn}
           disabled={isLoading}
-          className="bg-blue-500 rounded-xl p-4 flex-row justify-center"
-        >
+          className="bg-blue-500 rounded-xl p-4 flex-row justify-center">
           {isLoading ? (
             <ActivityIndicator color="white" />
           ) : (

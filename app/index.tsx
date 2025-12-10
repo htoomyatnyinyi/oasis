@@ -18,6 +18,10 @@ const index = () => {
   const [quantity, setQuantity] = useState(0);
 
   useEffect(() => {
+    // const a = fetch("http://localhost:8080/health");
+    // console.log(a);
+    // // a.then((res) => res.json()).then((data) => console.log(data, "data"));
+
     const checkToken = async () => {
       const token = await AsyncStorage.getItem("token");
       if (token) {
