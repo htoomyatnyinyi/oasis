@@ -1,79 +1,9 @@
-import "@/global.css";
-import Entypo from "@expo/vector-icons/Entypo";
 import { Tabs } from "expo-router";
 
 export default function TabsLayout() {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarInactiveTintColor: "green",
-        tabBarActiveTintColor: "coral",
-        headerShown: true,
-      }}>
-      {/* <Tabs.Screen name="index" options={{ title: "index" }}></Tabs.Screen> */}
-      <Tabs.Screen
-        name="products"
-        options={{
-          title: "products",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
-          ),
-        }}></Tabs.Screen>
-      <Tabs.Screen
-        name="map"
-        options={{
-          title: "map",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
-          ),
-        }}></Tabs.Screen>
-
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: "home",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
-          ),
-        }}></Tabs.Screen>
-      <Tabs.Screen
-        name="modal"
-        options={{
-          title: "modal",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
-          ),
-        }}></Tabs.Screen>
-      <Tabs.Screen
-        name="cart"
-        options={{
-          title: "cart",
-          tabBarIcon: ({ color, size }) => (
-            <Entypo name="home" size={size} color={color} />
-          ),
-        }}></Tabs.Screen>
-      {/* <Tabs.Screen
-        name="posts"
-        options={{
-          title: "posts",
-          tabBarIcon: ({ color, size }) => (
-            <FontAwesome name="align-center" size={size} color={color} />
-          ),
-        }}
-      ></Tabs.Screen>
-      <Tabs.Screen
-        name="theme"
-        options={{
-          title: "theme",
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons
-              name="theme-light-dark"
-              size={size}
-              color={color}
-            />
-          ),
-        }}
-      ></Tabs.Screen> */}
+    <Tabs>
+      <Tabs.Screen name="home" options={{ title: "home" }}></Tabs.Screen>
     </Tabs>
   );
 }
