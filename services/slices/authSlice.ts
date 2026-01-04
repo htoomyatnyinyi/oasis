@@ -11,14 +11,24 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     setCredentials: (state, action) => {
-      const { token, user } = action.payload;
-      state.token = token;
-      state.user = user;
+      const payload = action.payload;
+      if (typeof payload === "string") {
+        state.token = payload;
+      } else {
+        state.token = payload.token || state.token;
+        state.user = payload.user || state.user;
+      }
 
       // Persist the token in AsyncStorage
-      if (token) {
-        AsyncStorage.setItem("token", token);
+      if (state.token) {
+        AsyncStorage.setItem("token", state.token);
       }
+    },
+    setToken: (state, action) => {
+      state.token = action.payload;
+    },
+    setUser: (state, action) => {
+      state.user = action.payload;
     },
     logout: (state) => {
       state.token = null;
@@ -29,9 +39,9 @@ const authSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = authSlice.actions;
+export const { setCredentials, logout, setToken, setUser } = authSlice.actions;
 
 export default authSlice.reducer;
 
-// export const selectCurrentUser = (state) => state.auth.user;
-// export const selectCurrentToken = (state) => state.auth.token;
+export const selectCurrentToken = (state: any) => state.auth.token;
+export const selectCurrentUser = (state: any) => state.auth.user;

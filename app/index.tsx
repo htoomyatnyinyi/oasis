@@ -1,86 +1,54 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Link, router } from "expo-router";
-import { useEffect, useState } from "react";
-import { Button, FlatList, Text, TextInput, View } from "react-native";
+import { selectCurrentToken } from "@/services/slices/authSlice";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
+import React, { useEffect } from "react";
+import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useSelector } from "react-redux";
 
-interface ContentItem {
-  id: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
-const index = () => {
-  const [content, setContent] = useState<ContentItem[]>([]);
-  const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [quantity, setQuantity] = useState(0);
+const SplashScreen = () => {
+  const token = useSelector(selectCurrentToken);
 
   useEffect(() => {
-    const checkToken = async () => {
-      const token = await AsyncStorage.getItem("token");
+    // console.log("SplashScreen: token is", token);
+    const timer = setTimeout(() => {
       if (token) {
-        console.log("Found existing token, ready to navigate.");
-        // Optionally, use the token to fetch user data (getCurrentUser)
-        // and then navigate to the main screen.
-        router.replace("/(tabs)/products");
+        console.log("Redirecting to Products...");
+        router.replace("/products");
+      } else {
+        console.log("Redirecting to Signin...");
+        router.replace("/signin");
       }
-    };
-    checkToken();
-  }, []);
+    }, 2000); // 2 seconds
 
-  const inputNameHandler = (val: string) => {
-    setName(val);
-  };
-  const AddToContentHandler = () => {
-    setContent((prev) => [
-      ...prev,
-      { id: Math.random().toString(), name, price, quantity },
-    ]);
-
-    setName("");
-    setPrice(0);
-    setQuantity(0);
-  };
+    return () => clearTimeout(timer);
+  }, [token]);
 
   return (
-    <SafeAreaView>
-      <Text>AuthMe</Text>
-      <Link href={"/(auth)/signin"}>Signin</Link>
-      <Link href={"/(tabs)/products"}>Tabs</Link>
-      <View>
-        <TextInput
-          placeholder="name"
-          className="p-2 m-1 border-amber-500 border-b-2"
-          onChangeText={inputNameHandler}
-        />
-        <TextInput
-          placeholder="price"
-          className="p-2 m-1 border-amber-500 border-b-2"
-          onChangeText={(e) => setPrice(Number(e))}
-        />
-        <TextInput
-          placeholder="quantity"
-          className="p-2 m-1 border-amber-500 border-b-2"
-          onChangeText={(e) => setQuantity(Number(e))}
-        />
-        <Button title="submit" onPress={AddToContentHandler} />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#f97316",
+        alignItems: "center",
+        justifyContent: "center",
+      }}
+      className="bg-primary"
+    >
+      <View className="bg-white/20 p-8 rounded-[50px]">
+        <Ionicons name="cart" size={100} color="white" />
       </View>
-      <FlatList
-        data={content}
-        renderItem={(item) => (
-          <View>
-            <Text>Name: {item.item.name} </Text>
-            <Text>Price: {item.item.price} </Text>
-            <Text>Quantity: {item.item.quantity} </Text>
-          </View>
-        )}
-        keyExtractor={(content) => content.id}
-        className="p-2 m-1 bg-amber-500"
-      />
+      <Text className="text-white text-4xl font-black mt-6 tracking-widest">
+        OASIS
+      </Text>
+      <Text className="text-white/70 text-base mt-2">
+        Premium Ecommerce Experience
+      </Text>
+
+      <View className="absolute bottom-20">
+        <ActivityIndicator color="white" size="large" />
+      </View>
     </SafeAreaView>
   );
 };
 
-export default index;
+export default SplashScreen;

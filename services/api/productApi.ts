@@ -1,69 +1,37 @@
 import { PaginationParams, Product, ProductResponse } from "@/types";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { apiSlice } from "./apiSlice";
 
-export const productApi = createApi({
-  reducerPath: "product",
-  tagTypes: ["Product"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api",
-    // baseUrl: process.env.API_BASE_URL,
-    prepareHeaders: async (headers) => {
-      const token = await AsyncStorage.getItem("token");
-      // console.log(token, "at productApi getproduct");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
-
+export const productApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProducts: builder.query<ProductResponse, PaginationParams>({
-      query: () => ({
+      query: ({ page = 1, limit = 10, category, search, sort }) => ({
         url: "/products",
+        params: { page, limit, category, search, sort },
       }),
-
-      // query: ({ page = 1, limit = 10, category, search, sort }) => ({
-      //   url: "/products",
-      //   params: { page, limit, category, search, sort },
-      // }),
-
-      // // temp comment check
-      // providesTags: (result) =>
-      //   result
-      //     ? [
-      //         ...result.products.map(({ id }) => ({
-      //           type: "Product" as const,
-      //           id,
-      //         })),
-      //         { type: "Product", id: "LIST" },
-      //       ]
-      //     : [{ type: "Product", id: "LIST" }],
-
-      // extra
+      transformResponse: (response: { data: ProductResponse }) => response.data,
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.products.map(({ id }) => ({
+                type: "Product" as const,
+                id,
+              })),
+              { type: "Product", id: "LIST" },
+            ]
+          : [{ type: "Product", id: "LIST" }],
     }),
 
     // Get single product
     getProductById: builder.query<Product, string>({
       query: (id) => `/products/${id}`,
+      transformResponse: (response: { data: Product }) => response.data,
       providesTags: (result, error, id) => [{ type: "Product", id }],
     }),
 
     // Get featured products
-    // getFeaturedProducts: builder.query<Product[], number>({
-    //   query: (limit = 8) => `/products/featured?limit=${limit}`,
-    //   providesTags: (result) =>
-    //     result
-    //       ? [
-    //           ...result.map(({ id }) => ({ type: "Product", id })),
-    //           { type: "Product", id: "FEATURED" },
-    //         ]
-    //       : [{ type: "Product", id: "FEATURED" }],
-    // }),
-
     getFeaturedProducts: builder.query<Product[], number>({
       query: (limit = 8) => `/products/featured?limit=${limit}`,
+      transformResponse: (response: { data: Product[] }) => response.data,
       providesTags: (result) =>
         result
           ? [
@@ -76,6 +44,7 @@ export const productApi = createApi({
     // Get related products
     getRelatedProducts: builder.query<Product[], string>({
       query: (productId) => `/products/${productId}/related`,
+      transformResponse: (response: { data: Product[] }) => response.data,
       providesTags: (result, error, id) =>
         result
           ? [
@@ -85,21 +54,10 @@ export const productApi = createApi({
           : [{ type: "Product" as const, id: `RELATED-${id}` }],
     }),
 
-    // // Get related products
-    // getRelatedProducts: builder.query<Product[], string>({
-    //   query: (productId) => `/products/${productId}/related`,
-    //   providesTags: (result, error, id) =>
-    //     result
-    //       ? [
-    //           ...result.map(({ id }) => ({ type: "Product", id })),
-    //           { type: "Product", id: `RELATED-${id}` },
-    //         ]
-    //       : [{ type: "Product", id: `RELATED-${id}` }],
-    // }),
-
     // Search products
     searchProducts: builder.query<Product[], string>({
       query: (query) => `/products/search?q=${query}`,
+      transformResponse: (response: { data: Product[] }) => response.data,
       providesTags: (result) =>
         result
           ? [
@@ -109,21 +67,10 @@ export const productApi = createApi({
           : [{ type: "Product" as const, id: "SEARCH" }],
     }),
 
-    // // Search products
-    // searchProducts: builder.query<Product[], string>({
-    //   query: (query) => `/products/search?q=${query}`,
-    //   providesTags: (result) =>
-    //     result
-    //       ? [
-    //           ...result.map(({ id }) => ({ type: "Product", id })),
-    //           { type: "Product", id: "SEARCH" },
-    //         ]
-    //       : [{ type: "Product", id: "SEARCH" }],
-    // }),
-
     // Get product categories
     getCategories: builder.query<string[], void>({
       query: () => "/products/categories",
+      transformResponse: (response: { data: string[] }) => response.data,
     }),
 
     // Admin: Create product
@@ -133,6 +80,7 @@ export const productApi = createApi({
         method: "POST",
         body,
       }),
+      transformResponse: (response: { data: Product }) => response.data,
       invalidatesTags: [{ type: "Product", id: "LIST" }],
     }),
 
@@ -143,6 +91,7 @@ export const productApi = createApi({
         method: "PUT",
         body: data,
       }),
+      transformResponse: (response: { data: Product }) => response.data,
       invalidatesTags: (result, error, { id }) => [{ type: "Product", id }],
     }),
 
@@ -155,6 +104,7 @@ export const productApi = createApi({
       invalidatesTags: (result, error, id) => [{ type: "Product", id }],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

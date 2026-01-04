@@ -1,22 +1,7 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { setCredentials } from "../slices/authSlice";
+import { apiSlice } from "./apiSlice";
 
-export const authApi = createApi({
-  reducerPath: "auth",
-  tagTypes: ["User"],
-  baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/api",
-    // baseUrl: process.env.API_BASE_URL,
-    prepareHeaders: async (headers) => {
-      const token = await AsyncStorage.getItem("token");
-      if (token) {
-        headers.set("Authorization", `Bearer ${token}`);
-      }
-      return headers;
-    },
-  }),
-
+export const authApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation({
       query: (userInfo) => ({
@@ -36,9 +21,13 @@ export const authApi = createApi({
       async onQueryStarted(arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data.data.token, "auth api");
-          // dispatch(setToken(data.accessToken)); // Store the token in Redux
-          dispatch(setCredentials(data.data.token)); // Store the token in Redux
+          // data structure usually: { data: { token, user }, ... } or similar
+          // Adjust based on actual backend response
+          if (data?.data?.token) {
+            dispatch(
+              setCredentials({ token: data.data.token, user: data.data.user })
+            );
+          }
         } catch (error) {
           console.error("Login error:", error);
         }
@@ -92,9 +81,11 @@ export const authApi = createApi({
     // Get current user
     getCurrentUser: builder.query({
       query: () => "/auth/me",
+      transformResponse: (response: { data: any }) => response.data,
       providesTags: ["User"],
     }),
   }),
+  overrideExisting: false,
 });
 
 export const {

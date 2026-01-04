@@ -1,91 +1,238 @@
 import {
-  useClearCartMutation,
   useGetCartQuery,
   useRemoveCartItemMutation,
   useUpdateCartItemMutation,
 } from "@/services/api/cartApi";
 import { CartItem } from "@/types";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
-import { FlatList, Image, Text, TouchableOpacity, View } from "react-native";
-// import Icon from "react-native-vector-icons/MaterialIcons";
-import AntDesign from "@expo/vector-icons/AntDesign";
-import FontAwesome from "@expo/vector-icons/FontAwesome";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CartScreen = () => {
-  const { data: cart, isLoading } = useGetCartQuery();
+  const { data: cart, isLoading, refetch } = useGetCartQuery();
   const [updateCartItem] = useUpdateCartItemMutation();
   const [removeCartItem] = useRemoveCartItemMutation();
-  const [clearCart] = useClearCartMutation();
 
-  const handleUpdateQuantity = (itemId: string, newQuantity: number) => {
+  const handleUpdateQuantity = async (itemId: string, newQuantity: number) => {
     if (newQuantity < 1) {
-      removeCartItem(itemId);
+      handleRemove(itemId);
     } else {
-      updateCartItem({ itemId, quantity: newQuantity });
+      try {
+        await updateCartItem({ itemId, quantity: newQuantity }).unwrap();
+      } catch (error) {
+        console.error("Failed to update quantity", error);
+      }
+    }
+  };
+
+  const handleRemove = async (itemId: string) => {
+    try {
+      await removeCartItem(itemId).unwrap();
+    } catch (error) {
+      console.error("Failed to remove item", error);
     }
   };
 
   const renderCartItem = ({ item }: { item: CartItem }) => (
-    <View>
-      <Image source={{ uri: item.product.imageUrl }} />
-      <View>
-        <Text>{item.product.name}</Text>
-        <Text>${item.product.price}</Text>
-
+    <View
+      style={{ backgroundColor: "#ffffff", borderColor: "#e5e7eb" }}
+      className="flex-row p-4 rounded-3xl mb-4 border shadow-sm"
+    >
+      <Image
+        source={{
+          uri: item.product.imageUrl || "https://via.placeholder.com/150",
+        }}
+        style={{ width: 96, height: 96 }}
+        className="rounded-2xl"
+        resizeMode="cover"
+      />
+      <View className="flex-1 ml-4 justify-between">
         <View>
-          <TouchableOpacity
-            onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+          <View className="flex-row justify-between items-start">
+            <Text
+              style={{ color: "#1a1a1a" }}
+              className="font-bold text-base flex-1 mr-2"
+              numberOfLines={1}
+            >
+              {item.product.name}
+            </Text>
+            <TouchableOpacity onPress={() => handleRemove(item.id)}>
+              <Ionicons name="trash-outline" size={20} color="#ef4444" />
+            </TouchableOpacity>
+          </View>
+          <Text
+            style={{ color: "rgba(26, 26, 26, 0.6)" }}
+            className="text-xs mt-1"
+            numberOfLines={1}
           >
-            <FontAwesome name="remove" size={24} color="black" />
-          </TouchableOpacity>
+            {item.product.category || "General"}
+          </Text>
+        </View>
 
-          <Text>{item.quantity}</Text>
-
-          <TouchableOpacity
-            onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+        <View className="flex-row justify-between items-center">
+          <Text style={{ color: "#f97316" }} className="font-black text-lg">
+            ${item.product.price}
+          </Text>
+          <View
+            style={{ backgroundColor: "#f8f9fa", borderColor: "#e5e7eb" }}
+            className="flex-row items-center rounded-xl border px-1"
           >
-            <AntDesign name="appstore-add" size={24} color="black" />{" "}
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => removeCartItem(item.id)}>
-            <AntDesign name="delete" size={24} color="black" />{" "}
-          </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleUpdateQuantity(item.id, item.quantity - 1)}
+              className="p-1"
+            >
+              <Ionicons name="remove-circle-outline" size={24} color="gray" />
+            </TouchableOpacity>
+            <Text
+              style={{ color: "#1a1a1a" }}
+              className="mx-3 font-bold min-w-[20px] text-center"
+            >
+              {item.quantity}
+            </Text>
+            <TouchableOpacity
+              onPress={() => handleUpdateQuantity(item.id, item.quantity + 1)}
+              className="p-1"
+            >
+              <Ionicons name="add-circle-outline" size={24} color="#f97316" />
+            </TouchableOpacity>
+          </View>
         </View>
       </View>
     </View>
   );
 
   if (isLoading) {
-    return <Text>Loading cart...</Text>;
+    return (
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: "#ffffff",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator size="large" color="#f97316" />
+      </View>
+    );
   }
 
   return (
-    <SafeAreaView>
-      <FlatList
-        data={cart?.items || []}
-        renderItem={renderCartItem}
-        keyExtractor={(item) => item.id}
-        ListEmptyComponent={<Text>Your cart is empty</Text>}
-      />
-
-      {cart && cart.items.length > 0 && (
-        <View>
-          <View>
-            <Text>Total:</Text>
-            <Text>${cart.total}</Text>
-          </View>
-
-          <TouchableOpacity>
-            <Text>Checkout</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={() => clearCart()}>
-            <Text>Clear Cart</Text>
-          </TouchableOpacity>
+    <View style={{ flex: 1, backgroundColor: "#ffffff" }}>
+      <SafeAreaView style={{ flex: 1 }} edges={["top"]}>
+        <View className="px-4 py-4 flex-row items-center">
+          <Text
+            style={{ color: "#1a1a1a" }}
+            className="text-2xl font-bold flex-1"
+          >
+            My Cart
+          </Text>
+          {cart?.items?.length ? (
+            <Text
+              style={{ color: "rgba(26, 26, 26, 0.6)" }}
+              className="font-medium"
+            >
+              {cart.items.length} Items
+            </Text>
+          ) : null}
         </View>
-      )}
-    </SafeAreaView>
+
+        <FlatList
+          data={cart?.items || []}
+          renderItem={renderCartItem}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingBottom: 160 }}
+          refreshing={isLoading}
+          onRefresh={refetch}
+          ListEmptyComponent={
+            <View className="items-center mt-32 px-10">
+              <View
+                style={{ backgroundColor: "#ffffff", borderColor: "#e5e7eb" }}
+                className="p-8 rounded-full mb-6 border"
+              >
+                <Ionicons name="cart-outline" size={80} color="lightgray" />
+              </View>
+              <Text style={{ color: "#1a1a1a" }} className="text-xl font-bold">
+                Your cart is empty
+              </Text>
+              <Text
+                style={{ color: "rgba(26, 26, 26, 0.4)" }}
+                className="text-center mt-2"
+              >
+                Looks like you haven't added anything to your cart yet.
+              </Text>
+              <TouchableOpacity
+                style={{ backgroundColor: "#f97316", shadowColor: "#f97316" }}
+                className="px-8 py-4 rounded-2xl mt-8 shadow-lg"
+                onPress={() => router.push("/products")}
+              >
+                <Text className="text-white font-bold">Start Shopping</Text>
+              </TouchableOpacity>
+            </View>
+          }
+        />
+
+        {cart && cart.items.length > 0 && (
+          <View
+            style={{
+              backgroundColor: "#ffffff",
+              borderColor: "#e5e7eb",
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: -10 },
+              shadowOpacity: 0.1,
+              shadowRadius: 10,
+              elevation: 20,
+            }}
+            className="absolute bottom-0 left-0 right-0 p-6 rounded-t-[40px] border-t"
+          >
+            <View className="flex-row justify-between mb-2">
+              <Text style={{ color: "rgba(26, 26, 26, 0.6)" }}>Subtotal</Text>
+              <Text style={{ color: "#1a1a1a" }} className="font-semibold">
+                ${cart.total}
+              </Text>
+            </View>
+            <View className="flex-row justify-between mb-6">
+              <Text style={{ color: "rgba(26, 26, 26, 0.6)" }}>
+                Delivery Fee
+              </Text>
+              <Text className="text-green-500 font-semibold">Free</Text>
+            </View>
+            <View
+              style={{ borderTopColor: "rgba(26, 26, 26, 0.1)" }}
+              className="flex-row justify-between items-center mb-6 pt-4 border-t"
+            >
+              <Text style={{ color: "#1a1a1a" }} className="text-lg font-bold">
+                Total
+              </Text>
+              <Text
+                style={{ color: "#f97316" }}
+                className="text-2xl font-black"
+              >
+                ${cart.total}
+              </Text>
+            </View>
+            <TouchableOpacity
+              style={{ backgroundColor: "#f97316", shadowColor: "#f97316" }}
+              className="p-4 rounded-2xl shadow-xl flex-row justify-center items-center"
+            >
+              <Text className="text-white font-bold text-lg mr-2">
+                Checkout Now
+              </Text>
+              <Ionicons name="arrow-forward" size={20} color="white" />
+            </TouchableOpacity>
+          </View>
+        )}
+      </SafeAreaView>
+    </View>
   );
 };
+
 export default CartScreen;
