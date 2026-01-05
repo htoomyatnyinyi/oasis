@@ -4,6 +4,7 @@ import { store } from "@/services/store";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Stack } from "expo-router";
 import React, { useEffect } from "react";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider, useDispatch } from "react-redux";
 
@@ -34,16 +35,18 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   return (
-    <Provider store={store}>
-      <SafeAreaProvider>
-        <AuthInitializer>
-          <Stack screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="index" />
-            <Stack.Screen name="(auth)" />
-            <Stack.Screen name="(tabs)" />
-          </Stack>
-        </AuthInitializer>
-      </SafeAreaProvider>
-    </Provider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <Provider store={store}>
+        <SafeAreaProvider>
+          <AuthInitializer>
+            <Stack screenOptions={{ headerShown: false }}>
+              <Stack.Screen name="index" />
+              <Stack.Screen name="(auth)" />
+              <Stack.Screen name="(tabs)" />
+            </Stack>
+          </AuthInitializer>
+        </SafeAreaProvider>
+      </Provider>
+    </GestureHandlerRootView>
   );
 }

@@ -1,3 +1,4 @@
+import ProductDetailsPreview from "@/components/products/ProductDetailsPreview";
 import { useAddToCartMutation } from "@/services/api/cartApi";
 import {
   useGetCategoriesQuery,
@@ -25,6 +26,7 @@ const ProductsScreen = () => {
   const [page, setPage] = useState(1);
   const [category, setCategory] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   const {
     data: productsResponse,
@@ -45,7 +47,9 @@ const ProductsScreen = () => {
   };
 
   const renderProduct = ({ item }: { item: Product }) => (
-    <View
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={() => setSelectedProduct(item)}
       style={{
         width: COLUMN_WIDTH,
         backgroundColor: "#ffffff",
@@ -106,7 +110,7 @@ const ProductsScreen = () => {
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
   const renderHeader = () => (
@@ -240,6 +244,12 @@ const ProductsScreen = () => {
               </View>
             )
           }
+        />
+        <ProductDetailsPreview
+          isVisible={!!selectedProduct}
+          product={selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          onAddToCart={handleAddToCart}
         />
       </SafeAreaView>
     </View>
