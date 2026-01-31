@@ -4,7 +4,6 @@ import * as Haptics from "expo-haptics";
 import { Image } from "expo-image";
 import React from "react";
 import {
-  Dimensions,
   Platform,
   ScrollView,
   Text,
@@ -20,7 +19,7 @@ interface ProductDetailsPreviewProps {
   onAddToCart: (product: Product) => void;
 }
 
-const { width, height } = Dimensions.get("window");
+// { width, height } = Dimensions.get("window");
 
 const ProductDetailsPreview: React.FC<ProductDetailsPreviewProps> = ({
   isVisible,

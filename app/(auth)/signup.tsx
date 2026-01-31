@@ -16,11 +16,11 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Signup = () => {
   const [form, setForm] = useState({
-    username: "",
-    email: "",
-    password: "",
-    firstName: "",
-    lastName: "",
+    username: "ts",
+    email: "ts@mail.com",
+    password: "tstststs",
+    firstName: "ts",
+    lastName: "ts",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
@@ -32,6 +32,7 @@ const Signup = () => {
       setError("Please fill in all required fields");
       return;
     }
+    console.log(form, 'result');
     setError("");
     try {
       const result = await register(form).unwrap();

@@ -217,7 +217,7 @@ const ProductsScreen = () => {
           renderItem={renderProduct}
           keyExtractor={(item) => item.id}
           numColumns={2}
-          contentContainerStyle={{ paddingHorizontal: 8 }}
+          contentContainerStyle={{ paddingHorizontal: 8, paddingBottom: 100 }}
           onRefresh={refetch}
           refreshing={isFetching}
           onEndReached={() => {

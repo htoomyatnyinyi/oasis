@@ -26,11 +26,31 @@ export interface Cart {
 
 export interface Order {
   id: string;
+  userId: string;
   status: "PENDING" | "PAID" | "SHIPPED" | "DELIVERED" | "CANCELLED";
   totalAmount: number;
-  //   items: OrderItem[];
-  //   shippingAddress: Address;
+  subtotal: number;
+  taxAmount: number;
+  shippingAmount: number;
+  discountAmount: number;
+  shippingMethod: string | null;
+  paymentMethod: string | null;
+  paymentStatus: string;
+  shippingAddress: any;
+  billingAddress?: any;
+  items: any[];
   createdAt: string;
+  updatedAt: string;
+}
+
+export interface OrderResponse {
+  orders: Order[];
+  pagination: {
+    total: number;
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }
 
 export interface PaginationParams {

@@ -25,7 +25,7 @@ export const authApi = apiSlice.injectEndpoints({
           // Adjust based on actual backend response
           if (data?.data?.token) {
             dispatch(
-              setCredentials({ token: data.data.token, user: data.data.user })
+              setCredentials({ token: data.data.token, user: data.data.user }),
             );
           }
         } catch (error) {
@@ -55,7 +55,7 @@ export const authApi = apiSlice.injectEndpoints({
     // Refresh token
     refreshToken: builder.mutation<{ accessToken: string }, void>({
       query: () => ({
-        url: "/auth/refresh",
+        url: "/auth/refresh-token",
         method: "POST",
       }),
     }),

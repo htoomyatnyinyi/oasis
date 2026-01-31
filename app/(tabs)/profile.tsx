@@ -17,8 +17,18 @@ const ProfileScreen = () => {
 
   const menuItems = [
     { icon: "person-outline", label: "Edit Profile", color: "#3b82f6" },
-    { icon: "location-outline", label: "Shipping Address", color: "#10b981" },
-    { icon: "receipt-outline", label: "Order History", color: "#f59e0b" },
+    {
+      icon: "location-outline",
+      label: "Shipping Address",
+      color: "#10b981",
+      onPress: () => router.push("/addresses"),
+    },
+    {
+      icon: "receipt-outline",
+      label: "Order History",
+      color: "#f59e0b",
+      onPress: () => router.push("/orders"),
+    },
     { icon: "card-outline", label: "Payment Methods", color: "#6366f1" },
     { icon: "notifications-outline", label: "Notifications", color: "#ec4899" },
     {
@@ -34,7 +44,7 @@ const ProfileScreen = () => {
         <ScrollView className="flex-1 px-4">
           {/* Header */}
           <View className="py-6 flex-row justify-between items-center">
-            <Text style={{ color: "#1a1a1a" }} className="text-2xl font-bold">
+            <Text style={{ color: "#a1a1a1" }} className="text-2xl font-bold">
               Profile
             </Text>
             <TouchableOpacity
@@ -159,6 +169,7 @@ const ProfileScreen = () => {
                   borderBottomColor: "rgba(26, 26, 26, 0.05)",
                 }}
                 className="flex-row items-center p-5"
+                onPress={item.onPress}
               >
                 <View
                   style={{ backgroundColor: `${item.color}15` }}

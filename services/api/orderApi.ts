@@ -1,4 +1,4 @@
-import { Order } from "@/types";
+import { Order, OrderResponse } from "@/types";
 import { apiSlice } from "./apiSlice";
 
 export const orderApi = apiSlice.injectEndpoints({
@@ -13,13 +13,16 @@ export const orderApi = apiSlice.injectEndpoints({
       invalidatesTags: ["Order", "Cart"],
     }),
 
-    getOrders: builder.query<Order[], void>({
+    getOrders: builder.query<OrderResponse, void>({
       query: () => "/orders",
-      transformResponse: (response: { data: Order[] }) => response.data,
+      transformResponse: (response: { data: OrderResponse }) => response.data,
       providesTags: (result) =>
         result
           ? [
-              ...result.map(({ id }) => ({ type: "Order" as const, id })),
+              ...result.orders.map((order: Order) => ({
+                type: "Order" as const,
+                id: order.id,
+              })),
               { type: "Order", id: "LIST" },
             ]
           : [{ type: "Order", id: "LIST" }],

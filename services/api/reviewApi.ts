@@ -4,7 +4,7 @@ import { apiSlice } from "./apiSlice";
 export const reviewApi = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getProductReviews: builder.query<Review[], string>({
-      query: (productId) => `/products/${productId}/reviews`,
+      query: (productId) => `/reviews/product/${productId}`,
       transformResponse: (response: { data: Review[] }) => response.data,
       providesTags: (result) =>
         result

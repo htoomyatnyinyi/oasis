@@ -15,6 +15,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+// import { ScrollView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const CartScreen = () => {
@@ -163,11 +164,8 @@ const CartScreen = () => {
               <Text style={{ color: "#1a1a1a" }} className="text-xl font-bold">
                 Your cart is empty
               </Text>
-              <Text
-                style={{ color: "rgba(26, 26, 26, 0.4)" }}
-                className="text-center mt-2"
-              >
-                Looks like you haven't added anything to your cart yet.
+              <Text className="text-center mt-2 text-gray-400">
+                Looks like you haven&apos;t added anything to your cart yet.
               </Text>
               <TouchableOpacity
                 style={{ backgroundColor: "#f97316", shadowColor: "#f97316" }}
@@ -190,8 +188,9 @@ const CartScreen = () => {
               shadowOpacity: 0.1,
               shadowRadius: 10,
               elevation: 20,
+              bottom: 90,
             }}
-            className="absolute bottom-0 left-0 right-0 p-6 rounded-t-[40px] border-t"
+            className="absolute left-6 right-6 p-6 rounded-[30px] border"
           >
             <View className="flex-row justify-between mb-2">
               <Text style={{ color: "rgba(26, 26, 26, 0.6)" }}>Subtotal</Text>
@@ -222,6 +221,7 @@ const CartScreen = () => {
             <TouchableOpacity
               style={{ backgroundColor: "#f97316", shadowColor: "#f97316" }}
               className="p-4 rounded-2xl shadow-xl flex-row justify-center items-center"
+              onPress={() => router.push("/checkout")}
             >
               <Text className="text-white font-bold text-lg mr-2">
                 Checkout Now

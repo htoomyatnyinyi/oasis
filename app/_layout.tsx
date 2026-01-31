@@ -8,6 +8,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { Provider, useDispatch } from "react-redux";
 
+import { StripeProvider } from "@stripe/stripe-react-native";
+
 function AuthInitializer({ children }: { children: React.ReactNode }) {
   const dispatch = useDispatch();
 
@@ -35,18 +37,23 @@ function AuthInitializer({ children }: { children: React.ReactNode }) {
 
 export default function RootLayout() {
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
-      <Provider store={store}>
-        <SafeAreaProvider>
-          <AuthInitializer>
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(tabs)" />
-            </Stack>
-          </AuthInitializer>
-        </SafeAreaProvider>
-      </Provider>
-    </GestureHandlerRootView>
+    <Provider store={store}>
+      <GestureHandlerRootView style={{ flex: 1 }}>
+        <StripeProvider
+          publishableKey="pk_test_51SSorfHbhN0Z6COOSbTbqgRAM1kXRQqzte0sxKw0NIKsUELB4YMTiyyXS4KOdoDC288MwYwghM2Pj5Ro61U04WCU00IFeNFn3a"
+          merchantIdentifier="merchant.com.yourAppName" // required for Apple Pay
+        >
+          <SafeAreaProvider>
+            <AuthInitializer>
+              <Stack screenOptions={{ headerShown: false }}>
+                <Stack.Screen name="index" />
+                <Stack.Screen name="(auth)" />
+                <Stack.Screen name="(tabs)" />
+              </Stack>
+            </AuthInitializer>
+          </SafeAreaProvider>
+        </StripeProvider>
+      </GestureHandlerRootView>
+    </Provider>
   );
 }

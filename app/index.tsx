@@ -6,17 +6,14 @@ import { ActivityIndicator, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useSelector } from "react-redux";
 
-const SplashScreen = () => {
+export default function SplashScreen() {
   const token = useSelector(selectCurrentToken);
 
   useEffect(() => {
-    // console.log("SplashScreen: token is", token);
     const timer = setTimeout(() => {
       if (token) {
-        console.log("Redirecting to Products...");
         router.replace("/products");
       } else {
-        console.log("Redirecting to Signin...");
         router.replace("/signin");
       }
     }, 2000); // 2 seconds
@@ -32,7 +29,6 @@ const SplashScreen = () => {
         alignItems: "center",
         justifyContent: "center",
       }}
-      className="bg-primary"
     >
       <View className="bg-white/20 p-8 rounded-[50px]">
         <Ionicons name="cart" size={100} color="white" />
@@ -49,6 +45,4 @@ const SplashScreen = () => {
       </View>
     </SafeAreaView>
   );
-};
-
-export default SplashScreen;
+}
